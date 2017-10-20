@@ -19,7 +19,7 @@ public class Person {
 	
 	private String name;
 	
-	@OneToOne(fetch = FetchType.LAZY, cascade = CascadeType.ALL)
+	@OneToOne(fetch = FetchType.LAZY)
 	private Address address;
 	
 	private String search;
