@@ -1,9 +1,12 @@
 package com.ondevio.search;
 
+import java.util.Optional;
+
 import javax.transaction.Transactional;
 
 import org.aspectj.lang.JoinPoint;
 import org.aspectj.lang.annotation.After;
+import org.aspectj.lang.annotation.AfterReturning;
 import org.aspectj.lang.annotation.Aspect;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
@@ -24,16 +27,17 @@ public class SearchAspect {
 	@Autowired
 	PersonRepository repository;
 	
-	@After("execution(* com.ondevio.search.PersonRepository.save*(..))")
-	public void log(JoinPoint point) {
-	    System.out.println("@After: " + point.getSignature().getName() + " was called..");
+	@AfterReturning(pointcut = "execution(* com.ondevio.search.PersonRepository.save*(Person))", returning = "retVal")
+	public void log(JoinPoint point, Object retVal) {
 	    Person entity = (Person) point.getArgs()[0];
-	    //Person p = (Person) point.getArgs()[0];
-	    //p.setSearch(String.join(" ", p.getName(), a.getStreet(), a.getNumber()));
-	    //repository.save(p);
+	    Person rp = (Person) retVal;
 	    Person p = repository.findOne(entity.getId());
-	    Address a = p.getAddress();
-	    repository.updateSearch(p.getId(), String.join(" ", p.getName(), a.getStreet(), a.getNumber()));
+	    String search = PersonSearchStringBuilder.buildSearchString(p);
+	    entity.setSearch(search);
+	    rp.setSearch(search);
+		repository.updateSearch(p.getId(), search);
 	}
+	
+
 
 }
