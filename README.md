@@ -42,7 +42,7 @@ public class Address {
 }
 ```
 
-The goal is to search for Person(s) whos name or Address (street, number) matches a certain String.
+The goal is to search for Person(s) whose name or Address (street, number) matches a certain String.
 
 # Problem: slow queries
 
