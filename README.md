@@ -7,6 +7,7 @@ For a full-text search please take a look at [Hibernate Search](http://hibernate
 This approach simply consists of an extra column in the entity's table that stores a concatenation of the fields to search upon.
 
 Consider this Person - Address model.
+
 ![YUML Person Address class diagram](http://yuml.me/b8905acf)
 
 ```java
